@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const Blog = require('../models/blog')
-
 const api = supertest(app)
+const Blog = require('../models/blog')
 
 const initialBlogs = [
     {
@@ -49,6 +48,13 @@ test('There are four blogs', async () => {
 
     expect(response.body.length).toBe(initialBlogs.length)
 })
+
+test('The unique identifier is named id', async () => {
+    const response = await api.get('/api/blogs')
+    const body = response.body
+    console.log(body)
+    expect(response.body[0].id).toBeDefined()
+},  30000)
 
 afterAll(() => {
     mongoose.connection.close()
