@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 const dummy = (blogs) => {
     return 1
 }
@@ -27,9 +29,36 @@ const favoriteBlog = (blogs) => {
     return favBlog
 }
 
+const mostBlogs = (blogs) => {
+    const allNames = blogs.map(blog => blog.author)
+    const nameArray = _.uniq(allNames)
+    let mostOccurences = {
+        author: '',
+        blogs: 0
+    }
+    let currentMostCount = 0
+    let currentMostName = ''
+    nameArray.forEach((author) => {
+        let occurences = allNames.reduce((count, name) => {
+            if(name === author) {
+                 return count + 1
+             } else {
+                 return count
+             }
+        }, 0)
+
+        if(occurences > mostOccurences.blogs) {
+            mostOccurences.blogs = occurences
+            mostOccurences.author = author
+        }
+    })
+    return mostOccurences
+}
+
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }
 
