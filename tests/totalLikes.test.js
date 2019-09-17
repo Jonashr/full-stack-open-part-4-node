@@ -16,9 +16,7 @@ describe('total likes', () => {
       const result = totalLikes(listWithOneBlog)
       expect(result).toBe(5)
     })
-  })
 
-describe('total likes', () => {
     const listWithThreeBlogs = [
         {
             _id: '123',
@@ -48,9 +46,7 @@ describe('total likes', () => {
         expect(result).toBe(289)
     }
     )
-})
 
-describe('total likes', () => {
     const listWithThreeBlogsNoLikes = [
         {
             _id: '123',
@@ -79,13 +75,11 @@ describe('total likes', () => {
         const result = totalLikes(listWithThreeBlogsNoLikes)
         expect(result).toBe(0)
     })
-})
 
-describe('total likes', () => {
     const emptyList = []
 
     test('When list of blogs is empty it should return 0 likes', () => {
         const result = totalLikes(emptyList)
         expect(result).toBe(0)
     })
-})
+  })

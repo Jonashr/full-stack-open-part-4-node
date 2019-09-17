@@ -52,9 +52,27 @@ test('There are four blogs', async () => {
 test('The unique identifier is named id', async () => {
     const response = await api.get('/api/blogs')
     const body = response.body
-    console.log(body)
     expect(response.body[0].id).toBeDefined()
 },  30000)
+
+test('A valid blog can be added', async() => {
+    const newBlog = {
+        title: 'Title of movie',
+        author: 'Author of movie',
+        url: 'http://url.com',
+        likes: 50
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+
+    const response = await api.get('/api/blogs')
+    
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+
+}, 30000)
 
 afterAll(() => {
     mongoose.connection.close()
