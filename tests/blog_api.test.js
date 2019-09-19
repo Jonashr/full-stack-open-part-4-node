@@ -4,6 +4,8 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 
+jest.time
+
 const initialBlogs = [
     {
         _id: '5a422aa71b54a676234d17f8',
@@ -57,8 +59,8 @@ test('The unique identifier is named id', async () => {
 
 test('A valid blog can be added', async() => {
     const newBlog = {
-        title: 'Title of movie',
-        author: 'Author of movie',
+        title: 'Newly added blog',
+        author: 'Author of blog',
         url: 'http://url.com',
         likes: 50
     }
@@ -69,9 +71,11 @@ test('A valid blog can be added', async() => {
         .expect(201)
 
     const response = await api.get('/api/blogs')
-    
-    expect(response.body.length).toBe(initialBlogs.length + 1)
 
+    const titles = response.body.map(r => r.title)
+
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+    expect(titles).toContain('Newly added blog')
 }, 30000)
 
 afterAll(() => {
