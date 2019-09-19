@@ -36,8 +36,6 @@ const mostBlogs = (blogs) => {
         author: '',
         blogs: 0
     }
-    let currentMostCount = 0
-    let currentMostName = ''
     nameArray.forEach((author) => {
         let occurences = allNames.reduce((count, name) => {
             if(name === author) {
