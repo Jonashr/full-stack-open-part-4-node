@@ -53,10 +53,37 @@ const mostBlogs = (blogs) => {
     return mostOccurences
 }
 
+const mostLikes = (blogs) => {
+    const allBloggers = blogs.map(blog => blog.author)
+    const allUniquebloggers = _.uniq(allBloggers)
+
+    let currentBloggerWithMostLikes = {
+        author: '',
+        likes: 0
+    }
+
+    allUniquebloggers.forEach((blogger) => {
+        let currentBloggerLikes = blogs.reduce((totalLikes, blog) => {
+            if(blog.author === blogger) {
+                return totalLikes + blog.likes
+            } else {
+                return totalLikes
+            }
+        }, 0)
+
+        if(currentBloggerLikes > currentBloggerWithMostLikes.likes) {
+            currentBloggerWithMostLikes.author = blogger
+            currentBloggerWithMostLikes.likes = currentBloggerLikes
+        }
+    })
+    return currentBloggerWithMostLikes
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
 
