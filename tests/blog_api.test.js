@@ -43,7 +43,7 @@ test('Blogs are returned as application\/json format', async () => {
     await api.get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
-}, 10000)
+}, 30000)
 
 test('There are four blogs', async () => {
     const response = await api.get('/api/blogs')
@@ -89,11 +89,39 @@ test('If like attribute is missing from the request the value will default to 0'
     
     const response = await api.get('/api/blogs')
 
-    lastBlog = response.body.slice(-1)
+    const lastBlog = response.body.slice(-1)
 
     expect(lastBlog[0].likes).toBeDefined()
     expect(lastBlog[0].likes).toBe(0)
 
+}, 30000)
+
+test('Both title and url is missing responds with 400 response', async() => {
+    const newBlog = {
+        author: 'I am the author',
+        likes: 50
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+}, 30000)
+
+test('Title but not url is set repsonds with 201 response', async () => {
+    const newBlog = {
+        author: 'I am the author',
+        title: 'Title'
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(201)
+}, 30000)
+
+test('Url but not title is set repsonds with 201 response', async () => {
+    const newBlog = {
+        author: 'I am the author',
+        url: 'url goes here'
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(201)
 }, 30000)
 
 afterAll(() => {
