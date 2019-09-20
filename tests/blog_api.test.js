@@ -78,6 +78,24 @@ test('A valid blog can be added', async() => {
     expect(titles).toContain('Newly added blog')
 }, 30000)
 
+test('If like attribute is missing from the request the value will default to 0', async() => {
+    const newBlog = {
+        title: 'Newly added blog',
+        author: 'Author of blog',
+        url: 'http://url.com',
+    }
+    
+    await api.post('/api/blogs').send(newBlog)
+    
+    const response = await api.get('/api/blogs')
+
+    lastBlog = response.body.slice(-1)
+
+    expect(lastBlog[0].likes).toBeDefined()
+    expect(lastBlog[0].likes).toBe(0)
+
+}, 30000)
+
 afterAll(() => {
     mongoose.connection.close()
 })
