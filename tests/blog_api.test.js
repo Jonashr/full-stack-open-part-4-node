@@ -124,6 +124,13 @@ test('Url but not title is set repsonds with 201 response', async () => {
     await api.post('/api/blogs').send(newBlog).expect(201)
 }, 30000)
 
+test('Remove', async () => {
+    const deleteReq = await api.delete('/api/blogs/5a422aa71b54a676234d17f8')
+    console.log(deleteReq)
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(initialBlogs.length - 1)
+}, 30000)
+
 afterAll(() => {
     mongoose.connection.close()
 })
