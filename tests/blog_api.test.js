@@ -131,6 +131,21 @@ test('Remove', async () => {
     expect(response.body.length).toBe(initialBlogs.length - 1)
 }, 30000)
 
+// test('Update blog', async() => {
+//     const updatedBlog = {
+//         _id: '5a422aa71b54a676234d17f8',
+//         title: 'Blog 1',
+//         author: 'Author 1',
+//         url: 'http://url.com/1/',
+//         likes: 5
+//     }
+
+//     const response = await api.put('/api/blogs/5a422aa71b54a676234d17f8', updatedBlog)
+//     const updatedEntry = await api.get('/api/blogs/')   
+//     console.log(updatedEntry)
+//     expect(updatedEntry).toBe(0)
+// }, 30000)
+
 afterAll(() => {
     mongoose.connection.close()
 })
