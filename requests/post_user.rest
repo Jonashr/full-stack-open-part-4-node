@@ -1,9 +1,10 @@
-POST http://localhost:3003/api/users/
+POST http://localhost:3003/api/blogs/
 content-type: application/json
 
 {
-    "name": "Jonas",
-    "username": "kermit",
-    "password": "12345",
+    "title": "Somethingsomething",
+    "author": "kermitthetoad",
+    "likes": 33,
+    "user": "5d84548afa8e7c42ec76ee94"
 }
 
