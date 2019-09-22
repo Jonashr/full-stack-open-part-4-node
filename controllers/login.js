@@ -2,16 +2,14 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
-const config = require('../utils/config')
 
   loginRouter.post('/', async(request, response) => {
       const body = request.body
-
+      console.log(request)
       console.log(body)
 
       const user = await User.findOne({username: body.username})
-
-      console.log('USer', user.body, user.passwordHash)
+      console.log('USer', user, body.password, user.passwordHash)
 
       const passwordIsCorrect = user === null ? false 
         : await bcrypt.compare(body.password, user.passwordHash)
@@ -29,7 +27,6 @@ const config = require('../utils/config')
           id: user._id
       }
 
-      console.log(config.SECRET_PASSWORD)
 
       const token = jwt.sign(userToken, process.env.SECRET_PASSWORD)
 
