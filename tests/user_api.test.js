@@ -51,11 +51,8 @@ describe('When there is initially one user in the DB', () => {
       .send(newUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
-
-
-    console.log(result.body)
-
-    expect(result.body.message).toContain('`username` to be unique')
+    
+    expect(result.body.error).toContain('`username` to be unique')
 
     const usersAtTheEnd = await api.get('/api/users')
 
@@ -64,8 +61,6 @@ describe('When there is initially one user in the DB', () => {
   }, 30000)
 
   test('Should not be able to add a user with a password less than three characters', async() => {
-    const usersAtStart = await api.get('/api/users')
-
     const newUser = {
       username: 'hi',
       name: 'Whatever I write here should be ok',
