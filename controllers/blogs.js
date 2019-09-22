@@ -33,14 +33,13 @@ blogsRouter.post('/', async (request, response, next) => {
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
     response.status(201).json(savedBlog.toJSON())
-  } catch(error) {
-    response.status(400).json(error)
+  } catch(exception) {
+    console.log('Lets log exception', exception)
+    next(exception)
   }
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-  const body = request.body
-
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET_PASSWORD)
     if(!decodedToken.id) {
