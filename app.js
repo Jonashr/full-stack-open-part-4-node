@@ -12,12 +12,12 @@ const mongoose = require('mongoose')
 const mongoUrl = config.MONGODB_URI
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log("Connected to MongoDB")
-    })
-    .catch((error) => {
-        console.log('error connecting to MongoDB', error.message)
-    })
+  .then(() => {
+    console.log('Connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB', error.message)
+  })
 
 app.use(cors())
 app.use(express.static('build'))
