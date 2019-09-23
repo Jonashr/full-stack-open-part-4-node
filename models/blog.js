@@ -3,12 +3,12 @@ const mongoose = require('mongoose')
 const blogSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: function() {return this.url == null }
+    required: function() {return this.url === undefined }
   },
   author: String,
   url: {
     type: String,
-    required: function() { return this.title == null}
+    required: function() { return this.title=== undefined}
   },
   likes: {
     type: Number,
