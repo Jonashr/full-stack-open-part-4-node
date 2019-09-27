@@ -5,28 +5,28 @@ const User = require('../models/user')
 
 loginRouter.post('/', async(request, response) => {
   const body = request.body
-  console.log(request)
-  console.log(body)
 
-  const user = await User.findOne({ username: body.username })
-  console.log('USer', user, body.password, user.passwordHash)
+  console.log('Login body.', body)
 
-  const passwordIsCorrect = user === null ? false
-    : await bcrypt.compare(body.password, user.passwordHash)
+  const user = await User.findOne({ username: body.username.value })
 
-  if(user === null || !passwordIsCorrect) {
+  console.log('User', user)
+
+  let passwordIsCorrect = false
+  if(user !== null) {
+    passwordIsCorrect =  await bcrypt.compare(body.password.value, user.passwordHash)
+  }
+
+  if(!passwordIsCorrect) {
     return response.status(401).json({
       error: 'Invalid username or password'
     })
   }
 
-  console.log('this far')
-
   const userToken = {
     username: user.username,
     id: user._id
   }
-
 
   const token = jwt.sign(userToken, process.env.SECRET_PASSWORD)
 
@@ -37,3 +37,4 @@ loginRouter.post('/', async(request, response) => {
 })
 
 module.exports = loginRouter
+

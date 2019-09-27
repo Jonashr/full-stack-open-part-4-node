@@ -4,7 +4,11 @@ const uniqueValidator = require('mongoose-unique-validator')
 mongoose.set('useCreateIndex', true)
 
 const userSchema = new mongoose.Schema({
-  username: { type:String, required: true, minlength:3, unique: true },
+  username: { 
+    type: String, 
+    required: true, 
+    minlength:3, 
+    unique: true },
   name: String,
   passwordHash: String,
   blogs: [
@@ -15,6 +19,10 @@ const userSchema = new mongoose.Schema({
   ]
 })
 
+console.log('Get here?')
+
+userSchema.plugin(uniqueValidator)
+
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
@@ -23,6 +31,5 @@ userSchema.set('toJSON', {
   }
 })
 
-userSchema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('User', userSchema)

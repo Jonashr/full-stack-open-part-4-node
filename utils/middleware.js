@@ -8,7 +8,7 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.log(error.message)
+  console.log('Error handler:', error.message, error.name)
 
   if(error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })

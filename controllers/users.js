@@ -12,6 +12,8 @@ usersRouter.post('/', async(request, response, next) => {
     })
   }
 
+  console.log(request.body)
+
   const user = new User({
     name: request.body.name,
     username: request.body.username,
