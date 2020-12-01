@@ -1,6 +1,6 @@
 const favoriteBlog = require('../utils/list_helper').favoriteBlog
 
-describe('Favorite blog test', () => {
+describe('Favorite blog === Blog with the most likes', () => {
   const listWithThreeBlogs = [
     {
       _id: '123',
@@ -25,7 +25,7 @@ describe('Favorite blog test', () => {
     }
   ]
 
-  test('Favorite blog with three blogs', () => {
+  test('Favorite Blog should be blog 3 with 273 likes.', () => {
     const result = favoriteBlog(listWithThreeBlogs)
     expect(result.title).toBe('Blog 3')
     expect(result.author).toBe('Author 3')
@@ -42,7 +42,7 @@ describe('Favorite blog test', () => {
     }
   ]
 
-  test('Favorite blog with one blog', () => {
+  test('Favorite blog with one blog returns the first blog.', () => {
     const result = favoriteBlog(listWithSingleBlog)
     expect(result.title).toBe('Blog 1')
     expect(result.author).toBe('Author 1')
@@ -53,7 +53,7 @@ describe('Favorite blog test', () => {
 
   ]
 
-  test('Favorite blog empty list', () => {
+  test('An empty list returns null', () => {
     const result = favoriteBlog(emptyBlogList)
     expect(result).toBe(null)
   })

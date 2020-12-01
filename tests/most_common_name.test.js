@@ -1,6 +1,34 @@
 const mostBlogs = require('../utils/list_helper').mostBlogs
 
-describe('Favorite blog test', () => {
+describe('When there is an empty blog list', () => {
+  const emptyBlogList = []
+
+  test('Returns no name and 0', () => {
+    const result = mostBlogs(emptyBlogList)
+    expect(result.author).toBe('')
+    expect(result.blogs).toBe(0)
+  })
+})
+
+describe('When there is only a single blog', () => {
+  const listWithOneBlog = [
+    {
+      _id: '123',
+      title: 'Blog 1',
+      author: 'Author 1',
+      url: 'http://url.com/1/',
+      likes: 3
+    }
+  ]
+
+  test('Returns the author of the book and the value 1', () => {
+    const result = mostBlogs(listWithOneBlog)
+    expect(result.author).toBe('Author 1')
+    expect(result.blogs).toBe(1)
+  })
+})
+
+describe('When there are multiple blogs with reoccuring authors', () => {
   const listWithThreeBlogs = [
     {
       _id: '123',
@@ -25,36 +53,14 @@ describe('Favorite blog test', () => {
     }
   ]
 
-  test('List with three blogs where same person occurs twice will return the author that occured twice', () => {
+  test('The author occuring the most times will be returned and with the amount of times he occured', () => {
     const result = mostBlogs(listWithThreeBlogs)
     expect(result.author).toBe('Author 1')
     expect(result.blogs).toBe(2)
   })
+})
 
-  const emptyBlogList = []
-
-  test('An empty list should return no name and 0', () => {
-    const result = mostBlogs(emptyBlogList)
-    expect(result.author).toBe('')
-    expect(result.blogs).toBe(0)
-  })
-
-  const listWithOneBlog = [
-    {
-      _id: '123',
-      title: 'Blog 1',
-      author: 'Author 1',
-      url: 'http://url.com/1/',
-      likes: 3
-    }
-  ]
-
-  test('List with one should return the author of that book and value 1', () => {
-    const result = mostBlogs(listWithOneBlog)
-    expect(result.author).toBe('Author 1')
-    expect(result.blogs).toBe(1)
-  })
-
+describe('When there is a large list of blogs', () => {
   const listWithTenBlogs = [
     {
       _id: '123',
@@ -133,6 +139,4 @@ describe('Favorite blog test', () => {
     expect(result.author).toBe('Author 1')
     expect(result.blogs).toBe(7)
   })
-
-
 })

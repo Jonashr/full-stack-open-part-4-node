@@ -4,7 +4,7 @@ const app = require('../app')
 const api = supertest(app)
 const User = require('../models/user')
 
-beforeEach(async () => {
+beforeEach(async() => {
   await User.deleteMany({})
   const user = new User ({ username: 'test', password: '12345' })
   await user.save()
@@ -20,6 +20,8 @@ describe('When there is initially one user in the DB', () => {
       password: '123456'
     }
 
+    console.log('USERS AT START', usersAtStart.body)
+
     await api
       .post('/api/users')
       .send(newUser)
@@ -28,17 +30,18 @@ describe('When there is initially one user in the DB', () => {
 
     const usersAtTheEnd = await api.get('/api/users')
 
+    console.log('USERS AT THE END', usersAtTheEnd.body)
 
     expect(usersAtStart.body.length).toBe(usersAtTheEnd.body.length - 1)
 
     const userNames = usersAtTheEnd.body.map(user => user.username)
 
     expect(userNames).toContain(newUser.username)
-  }, 30000)
+  })
 
 
-  test('Attempting to create a new user with a username that already exists fails', async () => {
-    const usersAtStart = await api.get('/api/users')
+  test('Creating a new user with a username that already exists returns 400', async () => {
+    const usersBeforeTestRuns = await api.get('/api/users')
 
     const newUser = {
       username: 'test',
@@ -51,16 +54,16 @@ describe('When there is initially one user in the DB', () => {
       .send(newUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
-    
+
     expect(result.body.error).toContain('`username` to be unique')
 
-    const usersAtTheEnd = await api.get('/api/users')
+    const usersAfterApiCall = await api.get('/api/users')
 
-    expect(usersAtStart.body.length).toBe(usersAtTheEnd.body.length)
+    expect(usersBeforeTestRuns.body.length).toBe(usersAfterApiCall.body.length)
 
-  }, 30000)
+  })
 
-  test('Should not be able to add a user with a password less than three characters', async() => {
+  test('Adding a new user with a password less than three characters returns 400', async() => {
     const newUser = {
       username: 'hi',
       name: 'Whatever I write here should be ok',
@@ -73,11 +76,11 @@ describe('When there is initially one user in the DB', () => {
       .expect(400)
 
     expect(result.body.error).toContain('Password should be at least three characters long.')
-  }, 30000)
+  })
 
-  test('Should not be able to add a user with a username less than three characters', async() => {
+  test('Add a new user with a username less than three characters returns 400', async() => {
     const newUser = {
-      username: 'hi',
+      username: 'no',
       name: 'Whatever I write here should be ok',
       password: 'nope'
     }
@@ -87,7 +90,7 @@ describe('When there is initially one user in the DB', () => {
       .send(newUser)
       .expect(400)
 
-    expect(result.body.message).toContain('User validation failed: username: Path `username` (`hi`) is shorter than the minimum allowed length (3).')
+    expect(result.body.error).toContain('User validation failed: username: Path `username` (`no`) is shorter than the minimum allowed length (3).')
   })
 
   afterAll(() => {

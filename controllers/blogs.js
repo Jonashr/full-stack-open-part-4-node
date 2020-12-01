@@ -40,9 +40,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
-    console.log('requestion token', request.token)
     const decodedToken = jwt.verify(request.token, process.env.SECRET_PASSWORD)
-    console.log('decoded token', decodedToken)
     if(!decodedToken.id) {
       return response.status(401).json({ error: 'Token missing or invalid' })
     }
@@ -50,13 +48,12 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
     const blog = await Blog.findById(request.params.id)
 
-    if(blog.user.toString() !== user._id.toString()) {
+    if(!blog.user || blog.user.toString() !== user._id.toString()) {
       return response.status(401).json({ error: 'Token does not match the user' })
     }
     await Blog.remove(blog)
     response.status(204).end()
   } catch(exception) {
-    console.log('Delete exception', exception)
     next(exception)
   }
 })
@@ -66,8 +63,6 @@ blogsRouter.put('/:id', async (request, response, next) => {
 
   const user = await User.findById(body.user)
 
-  // console.log(user, body)
-
   const blog = {
     title: body.title,
     author: body.author,
@@ -76,11 +71,8 @@ blogsRouter.put('/:id', async (request, response, next) => {
     user: user._id
   }
 
-  console.log(blog)
-
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    console.log('Updated blog', updatedBlog)
     response.json(updatedBlog.toJSON())
   } catch(exception) {
     next(exception)

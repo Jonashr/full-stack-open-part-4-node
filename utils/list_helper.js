@@ -1,8 +1,4 @@
-var _ = require('lodash')
-
-const dummy = (blogs) => {
-  return 1
-}
+const _ = require('lodash')
 
 const totalLikes = (blogs) => {
   let sum = blogs.reduce((accumulated, blog) => {
@@ -16,7 +12,6 @@ const favoriteBlog = (blogs) => {
   if(blogs.length === 0) {
     return null
   }
-
 
   let favBlog = blogs.reduce((currentMost, blog) => {
     if(currentMost.likes < blog.likes) {
@@ -80,7 +75,6 @@ const mostLikes = (blogs) => {
 }
 
 module.exports = {
-  dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
