@@ -13,7 +13,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/jonashr123/part4#readme",
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
